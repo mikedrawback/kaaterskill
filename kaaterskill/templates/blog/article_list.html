@@ -1,0 +1,8 @@
+					{% for article in articles.items %}
+						<h1>
+							<a href="{{ article.permalink.href }}">{{ article.title }}</a>
+						</h1>
+						<p>
+							{{ article.body | safe }}
+						</p>
+					{% endfor %}
