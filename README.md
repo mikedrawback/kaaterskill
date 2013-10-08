@@ -1,4 +1,3 @@
-
 Kaaterskill
 ============
 A minimal, hypermedia blog engine based on the [DocJSON document format](https://github.com/docjson/docjson) for [Django](https://www.djangoproject.com/) built with the [Django REST framework](http://django-rest-framework.org/).
@@ -11,13 +10,13 @@ Install from github:
 
 ``` $pip install git+git://github.com/mikedrawback/kaaterskill ```
 
-Add to your installed apps in ``` settings.py ```:
+Add the apps below to your installed apps in ``` settings.py ```:
 
     INSTALLED_APPS = (
         '...',
+        'rest_framework',
         'kaaterskill',
         'kaaterskill.blog',
-        'django.contrib.admin',
         '...'
     )
 
