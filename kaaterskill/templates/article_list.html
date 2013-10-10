@@ -6,3 +6,9 @@
 							{{ article.body | safe }}
 						</p>
 					{% endfor %}
+					{% if articles.next %}
+					<p class="tags">
+						<a href="{{ articles.next }}">Next</a>
+					</p>
+					{% else %}
+					{% endif %}

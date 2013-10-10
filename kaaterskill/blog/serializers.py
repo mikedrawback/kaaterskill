@@ -6,6 +6,7 @@ from rest_framework.fields import SerializerMethodField
 
 from rest_framework_docjson.fields import DocJSONIdentityField
 from rest_framework_docjson.serializers import DocJSONModelSerializer, DocJSONSerializer
+from rest_framework_docjson.pagination import DocJSONPaginationSerializerWithPrevious
 from rest_framework_docjson.reverse import reverse
 
 blog_app = models.get_app("blog")
@@ -51,6 +52,11 @@ class ArticleListSerializer(DocJSONModelSerializer):
         fields = ('title', 'body', 'permalink', 'date_published')
 
 
+class PaginatedArticleSerializer(DocJSONPaginationSerializerWithPrevious):
+    class Meta:
+        object_serializer_class = ArticleListSerializer
+
+
 class ArticleDetailSerializer(DocJSONModelSerializer):
     permalink = DocJSONIdentityField(view_name='article-detail')
     tags = TagSerializer(many=True)
@@ -92,7 +98,7 @@ class NavigationDocumentSerializer(DocJSONSerializer):
 
 
 class ArticleListDocumentSerializer(NavigationDocumentSerializer):
-    articles = ArticleListSerializer(many=True)
+    articles = PaginatedArticleSerializer()
 
 
 class ArticleDetailDocumentSerializer(NavigationDocumentSerializer):

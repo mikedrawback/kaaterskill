@@ -1,5 +1,7 @@
 from django.utils import importlib
 from django.db import models
+from django.core.paginator import Paginator
+
 from kaaterskill_settings import KAATERSKILL_SETTINGS
 
 from rest_framework.response import Response
@@ -11,6 +13,7 @@ blog_models = importlib.import_module(blog_app.__name__[:-6] + "models")
 
 ArticleListDocumentSerializer = blog_serializers.ArticleListDocumentSerializer
 ArticleDetailDocumentSerializer = blog_serializers.ArticleDetailDocumentSerializer
+PaginatedArticleSerializer = blog_serializers.PaginatedArticleSerializer
 
 Category = blog_models.Category
 Tag = blog_models.Tag
@@ -39,7 +42,7 @@ class ArticleDetailDocument(NavigationDocument):
         self.kwargs = kwargs
 
     def article(self):
-       return Article.objects.published().get(**self.kwargs)
+        return Article.objects.published().get(**self.kwargs)
 
 
 # API View classes
@@ -59,8 +62,23 @@ class ArticleList(APIView):
 
     def get(self, request, *args, **kwargs):
         document = self.article_document_class(**kwargs)
-        serializer = ArticleListDocumentSerializer(document, context={'request': request})
-        
+        article_paginator = Paginator(document.articles(), 25)
+        requested_page = request.QUERY_PARAMS.get('page')
+
+        try:
+            articles = article_paginator.page(requested_page)
+        except:
+            articles = article_paginator.page(1)
+
+        document.articles = articles
+
+        if self.request.accepted_renderer.format != 'html' and requested_page > 1:
+            serializer = PaginatedArticleSerializer(document.articles,
+                context={'request': request})
+        else:
+            serializer = ArticleListDocumentSerializer(document,
+                context={'request': request})
+
         return Response(serializer.data, template_name='blog.html')
 
 
