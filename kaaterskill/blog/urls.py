@@ -28,4 +28,8 @@ urlpatterns = patterns('',
     url(r'^archive', include(patterns('',
         url(r'^/(?P<date_published__year>.+)/(?P<date_published__month>.+)$', ArticleList.as_view(), name='articlesbyarchive-list'),
     ))),
+
+    url(r'^author', include(patterns('',
+        url(r'/(?P<author__username>.+)$', ArticleList.as_view(), name='articlesbyauthor-list'),
+    ))),
 )

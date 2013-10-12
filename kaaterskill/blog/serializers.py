@@ -1,5 +1,6 @@
 from django.utils import importlib
 from django.db import models
+from django.contrib.auth.models import User
 
 from rest_framework import serializers
 from rest_framework.fields import SerializerMethodField
@@ -43,13 +44,29 @@ class TagSerializer(DocJSONModelSerializer):
         fields = ('name', 'permalink')
 
 
+class AuthorSerializer(DocJSONModelSerializer):
+    name = serializers.Field(source='username')
+    permalink = serializers.SerializerMethodField('posts_by_author')
+
+    def posts_by_author(self, obj):
+        return reverse('articlesbyauthor-list',
+                        args=[obj.username],
+                        request=self.context['request'])
+
+    class Meta:
+        model = User
+        fields = ('name', 'permalink')
+
+
 class ArticleListSerializer(DocJSONModelSerializer):
     permalink = DocJSONIdentityField(view_name='article-detail')
+    author = AuthorSerializer()
+
 
     class Meta:
         model = Article
         lookup_field = 'slug'
-        fields = ('title', 'body', 'permalink', 'date_published')
+        fields = ('title', 'body', 'permalink', 'date_published', 'author')
 
 
 class PaginatedArticleSerializer(DocJSONPaginationSerializerWithPrevious):
@@ -59,6 +76,7 @@ class PaginatedArticleSerializer(DocJSONPaginationSerializerWithPrevious):
 
 class ArticleDetailSerializer(DocJSONModelSerializer):
     permalink = DocJSONIdentityField(view_name='article-detail')
+    author = AuthorSerializer()
     tags = TagSerializer(many=True)
 
     class Meta:
@@ -69,6 +87,7 @@ class ArticleDetailSerializer(DocJSONModelSerializer):
                   'published',
                   'permalink',
                   'date_published',
+                  'author',
                   'tags')
 
 
