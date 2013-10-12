@@ -5,6 +5,12 @@
 						{{ article.body | safe }}
 					</p>
 					<p class="tags">
+						Published by 
+						<a href="{{ article.author.permalink.href }}">
+							{{ article.author.name }}
+						</a>
+					</p>
+					<p class="tags">
 						Tags: 
 						{% for tag in article.tags.items %}
 							<span class="tag">
