@@ -5,7 +5,7 @@ README = open(os.path.join(os.path.dirname(__file__), 'README.md')).read()
 
 setup(
     name='kaaterskill',
-    version='0.0.2',
+    version='0.0.3',
     packages=['kaaterskill', 'kaaterskill.blog'],
     include_package_data=True,
     license='BSD License',
