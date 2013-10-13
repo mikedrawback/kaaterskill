@@ -3,19 +3,131 @@
 <html>
 <head>
 	<title>{{ title }}</title>
-	{% include "head.html" %}
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <meta name="robots" content="NONE,NOARCHIVE" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="{{ STATIC_URL }}default.css">
+    <link rel="stylesheet" href="{{ STATIC_URL }}vendor/Simple-Grid/simplegrid.css">
+    <link href='http://fonts.googleapis.com/css?family=Vollkorn' rel='stylesheet' type='text/css'>
+    <link href='http://fonts.googleapis.com/css?family=PT+Sans:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
 </head>
 <body>
-	<div class="grid grid-pad">
-
-		{% include "title.html" %}
-
-		{% include "navigation.html" %}
-
-		{% include "articles.html" %}
-
-		{% include "sidebar.html" %}
-		
+	<div class="styled grid grid-pad">
+		<div class="col-6-12">
+			<div class="content">
+				<h1 class="title">{{ title }}</h1>
+			</div>
+		</div>
+		<div class="col-6-12">
+			<div class="content">
+				<ul class="navigation">
+					{% for item, val in navigation.iteritems %}
+					<li>
+						<a href="{{val.href}}">{{ item }}</a>
+					</li>
+					{% endfor %}
+				</ul>
+			</div>
+		</div>
 	</div>
+	<div class="grid grid-pad">
+		<div class="col-9-12">
+			<div class="content">
+				{% if articles %}
+					{% for article in articles.items %}
+						<h1>
+							<a href="{{ article.permalink.href }}">{{ article.title }}</a>
+						</h1>
+						<p>
+							{{ article.body | safe }}
+						</p>
+						<p class="tags">
+							Published on {{ article.date_published | date:"M d, Y"}} by 
+							<a href="{{ article.author.permalink.href }}">
+								{{ article.author.name }}
+							</a>
+						</p>
+					{% endfor %}
+					{% if articles.next %}
+					<p class="tags">
+						<a href="{{ articles.next }}">Next</a>
+					</p>
+					{% else %}
+					{% endif %}
+				{% elif article %}
+					<h1>
+						<a href="{{ article.permalink.href }}">{{ article.title }}</a>
+					</h1>
+					<p>
+						{{ article.body | safe }}
+					</p>
+					<p class="tags">
+						Published on {{ article.date_published | date:"M d, Y"}} by 
+						<a href="{{ article.author.permalink.href }}">
+							{{ article.author.name }}
+						</a>
+					</p>
+					<p class="tags">
+						Tags: 
+						{% for tag in article.tags.items %}
+							<span class="tag">
+								<a href="{{ tag.permalink.href }}">
+									{{ tag.name }}
+								</a>
+							{% if not forloop.last %}
+								, 
+							{% else %}
+							{% endif %}
+							</span>
+						{% endfor %}
+					</p>
+				{% endif %}
+			</div>
+		</div>
+
+		<div class="col-3-12">
+			<div class="content">
+
+				<h3>
+					Categories
+				</h3>
+				<ul>
+					{% for category in categories.items %}
+						<li>
+							<a href="{{ category.permalink.href }}">{{ category.name }}</a>
+						</li>
+					{% endfor %}
+				</ul>
+
+				<h3>
+					Archive
+				</h3>
+				<ul>
+					{% for month in archive.items %}
+						<li>
+							<a href="{{ month.permalink.href }}">{{ month.name }}</a>
+						</li>
+					{% endfor %}
+				</ul>
+
+				<h3>
+					Tags
+				</h3>
+				<ul>
+					{% for tag in tags.items %}
+						<li>
+							<a href="{{ tag.permalink.href }}">{{ tag.name }}</a>
+						</li>
+					{% endfor %}
+				</ul>
+			</div>	
+		</div>
+		<div class="col-11-12">
+			<p class="tiny">
+				powered by <a href="https://github.com/mikedrawback/kaaterskill">kaaterskill</a>
+			</p>
+		</div>		
+	</div>
+
 </body>
 </html>
