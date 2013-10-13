@@ -113,8 +113,14 @@ class NavigationDocumentSerializer(DocJSONSerializer):
     navigation = serializers.SerializerMethodField('get_navbar')
 
     def get_navbar(self, obj):
-        return {'blog': reverse('blog-root', request=self.context['request'])}
-
+        navbar = {'blog': reverse('blog-root', request=self.context['request'])}
+        request = self.context['request']
+        if request.user.is_authenticated() and request.accepted_renderer.format == 'html':
+            try:
+                navbar['admin'] = reverse('admin:index', request=request)
+            except:
+                pass
+        return navbar
 
 class ArticleListDocumentSerializer(NavigationDocumentSerializer):
     articles = PaginatedArticleSerializer()
