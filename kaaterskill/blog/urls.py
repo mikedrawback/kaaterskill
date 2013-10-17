@@ -4,10 +4,12 @@ from django.utils import importlib
 
 blog_app = models.get_app("blog")
 blog_views = importlib.import_module(blog_app.__name__[:-6] + "views")
+blog_feeds = importlib.import_module(blog_app.__name__[:-6] + "feeds")
 
 BlogRoot = blog_views.BlogRoot
 ArticleDetail = blog_views.ArticleDetail
 ArticleList = blog_views.ArticleList
+ArticleFeed = blog_feeds.ArticleFeed
 
 urlpatterns = patterns('',
 
@@ -32,4 +34,6 @@ urlpatterns = patterns('',
     url(r'^author', include(patterns('',
         url(r'/(?P<author__username>.+)$', ArticleList.as_view(), name='articlesbyauthor-list'),
     ))),
+
+    url(r'feed/$', ArticleFeed())
 )
