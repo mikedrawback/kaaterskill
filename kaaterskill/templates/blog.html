@@ -2,23 +2,34 @@
 
 <html>
 <head>
+	{% block head %}
 	<title>{{ title }}</title>
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
-    <meta name="robots" content="NONE,NOARCHIVE" />
+    <meta name="robots" content="NONE,NOARCHIVE"/>
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    {% block style %}
     <link rel="stylesheet" href="{{ STATIC_URL }}default.css">
+    {% endblock style %}
     <link rel="stylesheet" href="{{ STATIC_URL }}vendor/Simple-Grid/simplegrid.css">
+    {% block fonts %}
     <link href='http://fonts.googleapis.com/css?family=Vollkorn' rel='stylesheet' type='text/css'>
     <link href='http://fonts.googleapis.com/css?family=PT+Sans:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
+    {% endblock fonts %}
+    {% endblock head %}
 </head>
 <body>
+	{% block body %}
+	{% block titlebar %}
 	<div class="styled grid grid-pad">
 		<div class="col-6-12 topmargin">
+			{% block logo %}
 			<div class="content">
 				<h1 class="title">{{ title }}</h1>
 			</div>
+			{% endblock logo %}
 		</div>
 		<div class="col-6-12 topmargin">
+			{% block navigation %}
 			<div class="content">
 				<ul class="navigation">
 					{% for item, val in navigation.iteritems %}
@@ -27,10 +38,13 @@
 					</li>
 					{% endfor %}
 				</ul>
+			{% endblock navigation %}
 			</div>
 		</div>
 	</div>
+	{% endblock titlebar %}
 	<div class="grid grid-pad">
+		{% block main_content %}
 		<div class="col-9-12">
 			<div class="content">
 				{% if articles %}
@@ -84,7 +98,8 @@
 				{% endif %}
 			</div>
 		</div>
-
+		{% endblock main_content %}
+		{% block sidebar %}
 		<div class="col-3-12">
 			<div class="content">
 
@@ -122,12 +137,15 @@
 				</ul>
 			</div>	
 		</div>
+		{% endblock sidebar %}
+		{% block footer %}
 		<div class="col-11-12">
 			<p class="tiny">
 				powered by <a href="https://github.com/mikedrawback/kaaterskill">kaaterskill</a>
 			</p>
-		</div>		
+		</div>
+		{% endblock footer %}		
 	</div>
-
+	{% endblock body %}
 </body>
 </html>
