@@ -40,7 +40,7 @@ Set your Django REST Framework renderers in ``` settings.py ```:
 
     REST_FRAMEWORK = {
         'DEFAULT_RENDERER_CLASSES': (
-            'rest_framework.renderers.JSONRenderer',
+            'rest_framework_docjson.renderers.DocJSONRenderer',
             'rest_framework.renderers.TemplateHTMLRenderer',
         )
     }
