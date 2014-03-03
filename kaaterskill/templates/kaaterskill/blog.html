@@ -34,7 +34,7 @@
 				<ul class="navigation">
 					{% for item, val in navigation.iteritems %}
 					<li>
-						<a href="{{val.href}}">{{ item }}</a>
+						<a href="{{val.url}}">{{ item }}</a>
 					</li>
 					{% endfor %}
 				</ul>
@@ -50,14 +50,14 @@
 				{% if articles %}
 					{% for article in articles.items %}
 						<h1>
-							<a href="{{ article.permalink.href }}">{{ article.title }}</a>
+							<a href="{{ article.permalink.url }}">{{ article.title }}</a>
 						</h1>
 						<p>
 							{{ article.body | safe }}
 						</p>
 						<p class="tags">
 							Published on {{ article.date_published | date:"M d, Y"}} by 
-							<a href="{{ article.author.permalink.href }}">
+							<a href="{{ article.author.permalink.url }}">
 								{{ article.author.name }}
 							</a>
 						</p>
@@ -70,14 +70,14 @@
 					{% endif %}
 				{% elif article %}
 					<h1>
-						<a href="{{ article.permalink.href }}">{{ article.title }}</a>
+						<a href="{{ article.permalink.url }}">{{ article.title }}</a>
 					</h1>
 					<p>
 						{{ article.body | safe }}
 					</p>
 					<p class="tags">
 						Published on {{ article.date_published | date:"M d, Y"}} by 
-						<a href="{{ article.author.permalink.href }}">
+						<a href="{{ article.author.permalink.url }}">
 							{{ article.author.name }}
 						</a>
 					</p>
@@ -85,7 +85,7 @@
 						Tags: 
 						{% for tag in article.tags.items %}
 							<span class="tag">
-								<a href="{{ tag.permalink.href }}">
+								<a href="{{ tag.permalink.url }}">
 									{{ tag.name }}
 								</a>
 							{% if not forloop.last %}
@@ -107,9 +107,9 @@
 					Categories
 				</h3>
 				<ul>
-					{% for category in categories.items %}
+					{% for category in categories %}
 						<li>
-							<a href="{{ category.permalink.href }}">{{ category.name }}</a>
+							<a href="{{ category.permalink.url }}">{{ category.name }}</a>
 						</li>
 					{% endfor %}
 				</ul>
@@ -118,9 +118,9 @@
 					Archive
 				</h3>
 				<ul>
-					{% for month in archive.items %}
+					{% for month in archive %}
 						<li>
-							<a href="{{ month.permalink.href }}">{{ month.name }}</a>
+							<a href="{{ month.permalink.url }}">{{ month.name }}</a>
 						</li>
 					{% endfor %}
 				</ul>
@@ -129,9 +129,9 @@
 					Tags
 				</h3>
 				<ul>
-					{% for tag in tags.items %}
+					{% for tag in tags %}
 						<li>
-							<a href="{{ tag.permalink.href }}">{{ tag.name }}</a>
+							<a href="{{ tag.permalink.url }}">{{ tag.name }}</a>
 						</li>
 					{% endfor %}
 				</ul>
