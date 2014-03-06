@@ -64,9 +64,14 @@
 					{% endfor %}
 					{% if articles.next %}
 					<p class="tags">
-						<a href="{{ articles.next }}">Next</a>
+						<a href="{{ articles.next.url }}">Next Page</a>
 					</p>
 					{% else %}
+					{% endif %}
+					{% if articles.previous %}
+					<p class="tags">
+						<a href="{{ articles.previous.url }}">Previous Page</a>
+					</p>
 					{% endif %}
 				{% elif article %}
 					<h1>
